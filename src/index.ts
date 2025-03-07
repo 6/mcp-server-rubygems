@@ -4,6 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import { getRubyGemInfo, getRubyGemInfoJsonSchema } from "./tools/rubygems.js";
 
 /**
  * Type alias for a note object.
@@ -39,7 +40,7 @@ const server = new Server(
 
 /**
  * Handler that lists available tools.
- * Exposes a single "create_note" tool that lets clients create new notes.
+ * Exposes tools for creating notes and fetching RubyGem information.
  */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
@@ -61,14 +62,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ["title", "content"]
         }
+      },
+      {
+        name: "get_rubygem_info",
+        description: "Get information about a RubyGem from the RubyGems.org API",
+        inputSchema: getRubyGemInfoJsonSchema
       }
     ]
   };
 });
 
 /**
- * Handler for the create_note tool.
- * Creates a new note with the provided title and content, and returns success message.
+ * Handler for tool calls.
+ * Handles both note creation and RubyGem info fetching.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
@@ -88,6 +94,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           text: `Created note ${id}: ${title}`
         }]
       };
+    }
+
+    case "get_rubygem_info": {
+      const gemName = String(request.params.arguments?.rubygem_name);
+      if (!gemName) {
+        throw new Error("RubyGem name is required");
+      }
+
+      try {
+        const gemInfo = await getRubyGemInfo(gemName);
+        return {
+          content: [{
+            type: "text",
+            text: JSON.stringify(gemInfo, null, 2)
+          }]
+        };
+      } catch (error: any) {
+        throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
+      }
     }
 
     default:
