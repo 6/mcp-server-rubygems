@@ -4,7 +4,25 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { tools } from './tools/index.js';
+import { getRubyGemInfoTool } from './tools/get_rubygem_info.js';
+import { getGemVersionsTool } from './tools/get_gem_versions.js';
+import { getGemReverseDependenciesTool } from './tools/get_gem_reverse_dependencies.js';
+import { getGemOwnersTool } from './tools/get_gem_owners.js';
+import { getOwnerGemsTool } from './tools/get_owner_gems.js';
+import { searchRubyGemsTool } from './tools/search_rubygems.js';
+import { McpTool } from './tools/types.js';
+
+/**
+ * Define the array of available tools
+ */
+const tools: readonly McpTool[] = [
+  getRubyGemInfoTool,
+  searchRubyGemsTool,
+  getGemVersionsTool,
+  getGemReverseDependenciesTool,
+  getOwnerGemsTool,
+  getGemOwnersTool,
+] as const;
 
 /**
  * Create an MCP server with capabilities for resources (to list/read notes),
