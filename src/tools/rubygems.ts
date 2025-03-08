@@ -23,6 +23,8 @@ export const GetRubyGemInfoInputSchema = z.object({
   rubygem_name: z.string().describe('Name of the RubyGem to fetch information for'),
 });
 
+export type GetRubyGemInfoInput = z.infer<typeof GetRubyGemInfoInputSchema>;
+
 // Convert Zod schema to JSON schema for MCP
 export const getRubyGemInfoJsonSchema = zodToJsonSchema(GetRubyGemInfoInputSchema);
 
@@ -46,14 +48,11 @@ export const TOOL = {
   name: 'get_rubygem_info',
   description: 'Get information about a RubyGem from the RubyGems.org API',
   inputSchema: getRubyGemInfoJsonSchema,
-  handler: async (args: { rubygem_name?: unknown }) => {
-    const gemName = String(args.rubygem_name);
-    if (!gemName) {
-      throw new Error("RubyGem name is required");
-    }
+  handler: async (args: Record<string, unknown> | undefined) => {
+    const { rubygem_name } = GetRubyGemInfoInputSchema.parse(args || {});
 
     try {
-      const gemInfo = await getRubyGemInfo(gemName);
+      const gemInfo = await getRubyGemInfo(rubygem_name);
       return {
         content: [{
           type: "text",
