@@ -15,7 +15,9 @@
     "watch": "tsc --watch",
     "postbuild": "node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "prepare": "npm run build",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "lint": "eslint src",
+    "check_types": "tsc --noEmit"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",

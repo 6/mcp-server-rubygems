@@ -1,0 +1,27 @@
+name: Default
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+      - name: Install Dependencies
+        with:
+          script: npm install
+      - name: Check Types
+        with:
+          script: npm run check_types
+      - name: Lint
+        with:
+          script: npm run lint
