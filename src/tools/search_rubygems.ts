@@ -59,8 +59,11 @@ export const searchRubyGemsTool: McpTool = {
           },
         ],
       };
-    } catch (error: any) {
-      throw new Error(`Failed to search RubyGems: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to search RubyGems: ${error.message}`);
+      }
+      throw new Error(`Failed to search RubyGems: ${String(error)}`);
     }
   },
 };

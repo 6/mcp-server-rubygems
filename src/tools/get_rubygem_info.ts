@@ -66,8 +66,11 @@ export const getRubyGemInfoTool: McpTool = {
           },
         ],
       };
-    } catch (error: any) {
-      throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
+      }
+      throw new Error(`Failed to fetch RubyGem info: ${String(error)}`);
     }
   },
 };
