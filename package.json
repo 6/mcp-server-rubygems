@@ -1,7 +1,7 @@
 {
   "name": "mcp-server-rubygems",
   "version": "0.1.0",
-  "description": " A Model Context Protocol server for fetching rubygems info via rubygems API.",
+  "description": " A Model Context Protocol server for fetching rubygems metadata via rubygems API.",
   "private": true,
   "type": "module",
   "bin": {
