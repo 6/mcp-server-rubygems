@@ -11,17 +11,31 @@ export function getErrorMessage(error: unknown): string {
 }
 
 /**
- * Creates a standardized error response with context
+ * Creates a standardized error response
  *
- * @param message - The error message
+ * @param error - The error object
+ * @param prefix - Optional prefix for the error message
  * @returns An MCP tool response with error information
  */
-export function createErrorResponse(message: string): McpToolResponse {
+export function createErrorResponse(
+  error: unknown,
+  prefix: string = ''
+): McpToolResponse {
+  const errorMessage = getErrorMessage(error);
+  const fullMessage = prefix ? `${prefix}: ${errorMessage}` : errorMessage;
+
   return {
     content: [
       {
         type: 'text',
-        text: message,
+        text: JSON.stringify(
+          {
+            error: true,
+            message: fullMessage,
+          },
+          null,
+          2
+        ),
       },
     ],
   };
