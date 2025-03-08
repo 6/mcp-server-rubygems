@@ -17,7 +17,8 @@
     "prepare": "npm run build",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
     "lint": "eslint src",
-    "check_types": "tsc --noEmit"
+    "check_types": "tsc --noEmit",
+    "knip": "knip"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
@@ -27,13 +28,14 @@
   "devDependencies": {
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.17.23",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
+    "knip": "^5.45.0",
     "prettier": "^3.5.3",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.2"
   }
 }
