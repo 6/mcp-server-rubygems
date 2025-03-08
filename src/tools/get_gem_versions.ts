@@ -21,10 +21,19 @@ const GetGemVersionsInputSchema = z.object({
     .string()
     .min(1)
     .describe('Name of the RubyGem to fetch versions for'),
+  limit: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Maximum number of versions to return'),
 });
 
 // Function to fetch RubyGem versions
-async function getGemVersions(gemName: string): Promise<GemVersion[]> {
+async function getGemVersions(
+  gemName: string,
+  limit?: number
+): Promise<GemVersion[]> {
   const response = await fetch(
     `https://rubygems.org/api/v1/versions/${gemName}.json`
   );
@@ -37,7 +46,14 @@ async function getGemVersions(gemName: string): Promise<GemVersion[]> {
   }
 
   const data = await response.json();
-  return z.array(GemVersionSchema).parse(data);
+  let versions = z.array(GemVersionSchema).parse(data);
+
+  // Apply limit if provided
+  if (limit && limit > 0) {
+    versions = versions.slice(0, limit);
+  }
+
+  return versions;
 }
 
 // Tool definition
@@ -49,10 +65,10 @@ export const getGemVersionsTool: McpTool = {
     properties: zodToJsonSchema(GetGemVersionsInputSchema),
   },
   handler: async (args: Record<string, unknown> | undefined) => {
-    const { gem_name } = GetGemVersionsInputSchema.parse(args || {});
+    const { gem_name, limit } = GetGemVersionsInputSchema.parse(args || {});
 
     try {
-      const versions = await getGemVersions(gem_name);
+      const versions = await getGemVersions(gem_name, limit);
       return {
         content: [
           {
