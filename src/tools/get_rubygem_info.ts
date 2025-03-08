@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { McpTool } from './types.js';
+import { createErrorResponse, getErrorMessage } from './utils.js';
 
 // Define the response schema for RubyGem info
 export const RubyGemInfoSchema = z.object({
@@ -67,10 +68,10 @@ export const getRubyGemInfoTool: McpTool = {
         ],
       };
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
-      }
-      throw new Error(`Failed to fetch RubyGem info: ${String(error)}`);
+      // Return error context instead of throwing an error
+      return createErrorResponse(
+        `Failed to fetch RubyGem info: ${getErrorMessage(error)}`
+      );
     }
   },
 };
