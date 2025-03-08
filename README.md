@@ -1,4 +1,4 @@
-# mcp-server-rubygems
+# mcp-server-rubygems [![Default](https://github.com/6/mcp-server-rubygems/actions/workflows/default.yml/badge.svg)](https://github.com/6/mcp-server-rubygems/actions/workflows/default.yml)
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) server for fetching rubygems metadata via [rubygems.org API](https://guides.rubygems.org/rubygems-org-api/).
 
