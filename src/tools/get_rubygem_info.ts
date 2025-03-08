@@ -24,10 +24,9 @@ type RubyGemInfo = z.infer<typeof RubyGemInfoSchema>;
 const GetRubyGemInfoInputSchema = z.object({
   rubygem_name: z
     .string()
+    .min(1)
     .describe('Name of the RubyGem to fetch information for'),
 });
-
-type GetRubyGemInfoInput = z.infer<typeof GetRubyGemInfoInputSchema>;
 
 // Function to fetch RubyGem info
 async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {

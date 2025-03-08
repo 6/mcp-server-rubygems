@@ -19,10 +19,8 @@ type RubyGemSearchResult = z.infer<typeof RubyGemSearchResultSchema>;
 
 // Define the input schema for the tool
 const SearchRubyGemsInputSchema = z.object({
-  query: z.string().describe('Search query for finding RubyGems'),
+  query: z.string().min(1).describe('Search query for finding RubyGems'),
 });
-
-type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
 
 // Function to search RubyGems
 async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
