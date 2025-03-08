@@ -1,6 +1,6 @@
 # mcp-server-rubygems
 
-A [Model Context Protocol](https://modelcontextprotocol.io/) server for fetching rubygems info via [rubygems.org API](https://guides.rubygems.org/rubygems-org-api/).
+A [Model Context Protocol](https://modelcontextprotocol.io/) server for fetching rubygems metadata via [rubygems.org API](https://guides.rubygems.org/rubygems-org-api/).
 
 ## Tools
 
