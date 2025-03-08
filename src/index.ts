@@ -12,7 +12,7 @@ import { getGemReverseDependenciesTool } from './tools/get_gem_reverse_dependenc
 import { getGemOwnersTool } from './tools/get_gem_owners.js';
 import { getOwnerGemsTool } from './tools/get_owner_gems.js';
 import { searchRubyGemsTool } from './tools/search_rubygems.js';
-import { McpTool } from './tools/types.js';
+import { type McpTool } from './tools/types.js';
 
 /**
  * Define the array of available tools

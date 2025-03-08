@@ -1,4 +1,4 @@
-import { McpToolResponse } from './types.js';
+import { type McpToolResponse } from './types.js';
 
 /**
  * Extracts a readable error message from any error object

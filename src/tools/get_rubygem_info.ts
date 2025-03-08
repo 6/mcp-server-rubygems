@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { McpTool } from './types.js';
+import { type McpTool } from './types.js';
 import { createErrorResponse } from './utils.js';
 
 // Define the response schema for RubyGem info
