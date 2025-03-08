@@ -11,9 +11,10 @@
     "build"
   ],
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "prepare": "npm run build",
+    "build": "tsc",
     "watch": "tsc --watch",
+    "postbuild": "node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "npm run build",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js"
   },
   "dependencies": {
