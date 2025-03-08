@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+import { McpTool } from './types.js';
 
 // Define the response schema for RubyGem search results
 export const RubyGemSearchResultSchema = z.object({
@@ -22,17 +23,8 @@ export const SearchRubyGemsInputSchema = z.object({
 
 export type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
 
-// Input schema for MCP
-const inputJsonSchema = {
-  type: "object" as const,
-  properties: {
-    query: {
-      type: "string" as const,
-      description: "Search query for finding RubyGems"
-    }
-  },
-  required: ["query"]
-};
+// Convert Zod schema to JSON schema for MCP
+const inputJsonSchema = zodToJsonSchema(SearchRubyGemsInputSchema);
 
 // Function to search RubyGems
 async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
@@ -47,7 +39,7 @@ async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
 }
 
 // Tool definition
-export const searchRubyGemsTool: Tool = {
+export const searchRubyGemsTool: McpTool = {
   name: 'search_rubygems',
   description: 'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
   inputSchema: inputJsonSchema,
