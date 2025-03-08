@@ -4,7 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { TOOL } from "./tools/rubygems.js";
+import { tools } from "./tools/index.js";
 
 /**
  * Create an MCP server with capabilities for resources (to list/read notes),
@@ -26,25 +26,21 @@ const server = new Server(
 
 /**
  * Handler that lists available tools.
- * Exposes tools for creating notes and fetching RubyGem information.
  */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {
-    tools: [TOOL]
-  };
+  return { tools };
 });
 
 /**
  * Handler for tool calls.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  switch (request.params.name) {
-    case TOOL.name:
-      return TOOL.handler(request.params.arguments || {});
-
-    default:
-      throw new Error("Unknown tool");
+  const tool = tools.find(t => t.name === request.params.name);
+  if (!tool) {
+    throw new Error("Unknown tool");
   }
+
+  return tool.handler(request.params.arguments);
 });
 
 /**
