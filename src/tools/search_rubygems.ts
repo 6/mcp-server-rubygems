@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { McpTool } from './types.js';
 
 // Define the response schema for RubyGem search results
 export const RubyGemSearchResultSchema = z.object({
@@ -38,7 +39,7 @@ async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
 }
 
 // Tool definition
-export const searchRubyGemsTool = {
+export const searchRubyGemsTool: McpTool = {
   name: 'search_rubygems',
   description: 'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
   inputSchema: inputJsonSchema,
@@ -57,4 +58,4 @@ export const searchRubyGemsTool = {
       throw new Error(`Failed to search RubyGems: ${error.message}`);
     }
   }
-} as const;
+};

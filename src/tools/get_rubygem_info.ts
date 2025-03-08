@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { McpTool } from './types.js';
 
 // Define the response schema for RubyGem info
 export const RubyGemInfoSchema = z.object({
@@ -44,7 +45,7 @@ async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
 }
 
 // Tool definition
-export const getRubyGemInfoTool = {
+export const getRubyGemInfoTool: McpTool = {
   name: 'get_rubygem_info',
   description: 'Get information about a RubyGem from the RubyGems.org API',
   inputSchema: inputJsonSchema,
@@ -63,4 +64,4 @@ export const getRubyGemInfoTool = {
       throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
     }
   }
-} as const;
+};
