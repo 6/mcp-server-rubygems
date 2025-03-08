@@ -4,6 +4,17 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server for fetching
 
 ## Tools
 
+This MCP server provides the following tools for interacting with the RubyGems.org API:
+
+| Tool                           | Description                                               |
+| ------------------------------ | --------------------------------------------------------- |
+| `get_rubygem_info`             | Get information about a RubyGem                           |
+| `search_rubygems`              | Search for RubyGems matching a query string               |
+| `get_gem_versions`             | Get all available versions of a specific RubyGem          |
+| `get_gem_reverse_dependencies` | Get gems that depend on a specific RubyGem                |
+| `get_owner_gems`               | Get all RubyGems owned by a specific user or organization |
+| `get_gem_owners`               | Get the owners of a specific RubyGem                      |
+
 ## Usage
 
 Install dependencies:
