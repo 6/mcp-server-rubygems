@@ -23,9 +23,6 @@ export const SearchRubyGemsInputSchema = z.object({
 
 export type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
 
-// Convert Zod schema to JSON schema for MCP
-const inputJsonSchema = zodToJsonSchema(SearchRubyGemsInputSchema);
-
 // Function to search RubyGems
 async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
   const response = await fetch(`https://rubygems.org/api/v1/search.json?query=${encodeURIComponent(query)}`);
@@ -42,7 +39,10 @@ async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
 export const searchRubyGemsTool: McpTool = {
   name: 'search_rubygems',
   description: 'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
-  inputSchema: inputJsonSchema,
+  inputSchema: {
+    type: "object",
+    properties: zodToJsonSchema(SearchRubyGemsInputSchema),
+  },
   handler: async (args: Record<string, unknown> | undefined) => {
     const { query } = SearchRubyGemsInputSchema.parse(args || {});
 
