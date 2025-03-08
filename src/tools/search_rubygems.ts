@@ -40,7 +40,7 @@ async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
 // Tool definition
 export const searchRubyGemsTool = {
   name: 'search_rubygems',
-  description: 'Search for RubyGems matching a query string',
+  description: 'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
   inputSchema: inputJsonSchema,
   handler: async (args: Record<string, unknown> | undefined) => {
     const { query } = SearchRubyGemsInputSchema.parse(args || {});
