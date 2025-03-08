@@ -17,11 +17,8 @@ jobs:
         with:
           node-version-file: .nvmrc
       - name: Install Dependencies
-        with:
-          script: npm install
+        run: npm install
       - name: Check Types
-        with:
-          script: npm run check_types
+        run: npm run check_types
       - name: Lint
-        with:
-          script: npm run lint
+        run: npm run lint
