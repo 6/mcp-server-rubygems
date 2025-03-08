@@ -4,7 +4,7 @@ import { McpTool } from './types.js';
 import { createErrorResponse } from './utils.js';
 
 // Define the response schema for RubyGem search results
-export const RubyGemSearchResultSchema = z.object({
+const RubyGemSearchResultSchema = z.object({
   name: z.string(),
   version: z.string(),
   downloads: z.number(),
@@ -15,14 +15,14 @@ export const RubyGemSearchResultSchema = z.object({
   bug_tracker_uri: z.string().nullable(),
 });
 
-export type RubyGemSearchResult = z.infer<typeof RubyGemSearchResultSchema>;
+type RubyGemSearchResult = z.infer<typeof RubyGemSearchResultSchema>;
 
 // Define the input schema for the tool
-export const SearchRubyGemsInputSchema = z.object({
+const SearchRubyGemsInputSchema = z.object({
   query: z.string().describe('Search query for finding RubyGems'),
 });
 
-export type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
+type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
 
 // Function to search RubyGems
 async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {

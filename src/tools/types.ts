@@ -3,7 +3,7 @@ import { Tool } from '@modelcontextprotocol/sdk/types.js';
 /**
  * Type definition for an MCP tool response content item
  */
-export type McpToolResponseContent = {
+type McpToolResponseContent = {
   type: 'text';
   text: string;
 };
