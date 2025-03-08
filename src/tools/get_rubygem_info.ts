@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import { McpTool } from './types.js';
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 // Define the response schema for RubyGem info
 export const RubyGemInfoSchema = z.object({
@@ -26,8 +25,17 @@ export const GetRubyGemInfoInputSchema = z.object({
 
 export type GetRubyGemInfoInput = z.infer<typeof GetRubyGemInfoInputSchema>;
 
-// Convert Zod schema to JSON schema for MCP
-const inputJsonSchema = zodToJsonSchema(GetRubyGemInfoInputSchema);
+// Input schema for MCP
+const inputJsonSchema = {
+  type: "object" as const,
+  properties: {
+    rubygem_name: {
+      type: "string" as const,
+      description: "Name of the RubyGem to fetch information for"
+    }
+  },
+  required: ["rubygem_name"]
+};
 
 // Function to fetch RubyGem info
 async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
@@ -45,7 +53,7 @@ async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
 }
 
 // Tool definition
-export const getRubyGemInfoTool: McpTool = {
+export const getRubyGemInfoTool: Tool = {
   name: 'get_rubygem_info',
   description: 'Get information about a RubyGem from the RubyGems.org API',
   inputSchema: inputJsonSchema,
