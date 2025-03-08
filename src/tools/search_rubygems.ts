@@ -25,7 +25,9 @@ export type SearchRubyGemsInput = z.infer<typeof SearchRubyGemsInputSchema>;
 
 // Function to search RubyGems
 async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
-  const response = await fetch(`https://rubygems.org/api/v1/search.json?query=${encodeURIComponent(query)}`);
+  const response = await fetch(
+    `https://rubygems.org/api/v1/search.json?query=${encodeURIComponent(query)}`
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to search RubyGems: ${response.statusText}`);
@@ -38,9 +40,10 @@ async function searchRubyGems(query: string): Promise<RubyGemSearchResult[]> {
 // Tool definition
 export const searchRubyGemsTool: McpTool = {
   name: 'search_rubygems',
-  description: 'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
+  description:
+    'Search for RubyGems matching a query string. The search matches against gem names and descriptions. Returns up to 10 results, ordered by relevance. Example queries: "authentication", "rails middleware", "aws sdk"',
   inputSchema: {
-    type: "object",
+    type: 'object',
     properties: zodToJsonSchema(SearchRubyGemsInputSchema),
   },
   handler: async (args: Record<string, unknown> | undefined) => {
@@ -49,13 +52,15 @@ export const searchRubyGemsTool: McpTool = {
     try {
       const results = await searchRubyGems(query);
       return {
-        content: [{
-          type: "text",
-          text: JSON.stringify(results.slice(0, 10), null, 2) // Limit to top 10 results for readability
-        }]
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(results.slice(0, 10), null, 2), // Limit to top 10 results for readability
+          },
+        ],
       };
     } catch (error: any) {
       throw new Error(`Failed to search RubyGems: ${error.message}`);
     }
-  }
+  },
 };

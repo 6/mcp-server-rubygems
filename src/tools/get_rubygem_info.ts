@@ -21,14 +21,18 @@ export type RubyGemInfo = z.infer<typeof RubyGemInfoSchema>;
 
 // Define the input schema for the tool
 export const GetRubyGemInfoInputSchema = z.object({
-  rubygem_name: z.string().describe('Name of the RubyGem to fetch information for'),
+  rubygem_name: z
+    .string()
+    .describe('Name of the RubyGem to fetch information for'),
 });
 
 export type GetRubyGemInfoInput = z.infer<typeof GetRubyGemInfoInputSchema>;
 
 // Function to fetch RubyGem info
 async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
-  const response = await fetch(`https://rubygems.org/api/v1/gems/${gemName}.json`);
+  const response = await fetch(
+    `https://rubygems.org/api/v1/gems/${gemName}.json`
+  );
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -46,7 +50,7 @@ export const getRubyGemInfoTool: McpTool = {
   name: 'get_rubygem_info',
   description: 'Get information about a RubyGem from the RubyGems.org API',
   inputSchema: {
-    type: "object",
+    type: 'object',
     properties: zodToJsonSchema(GetRubyGemInfoInputSchema),
   },
   handler: async (args: Record<string, unknown> | undefined) => {
@@ -55,13 +59,15 @@ export const getRubyGemInfoTool: McpTool = {
     try {
       const gemInfo = await getRubyGemInfo(rubygem_name);
       return {
-        content: [{
-          type: "text",
-          text: JSON.stringify(gemInfo, null, 2)
-        }]
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(gemInfo, null, 2),
+          },
+        ],
       };
     } catch (error: any) {
       throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
     }
-  }
+  },
 };

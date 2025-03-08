@@ -1,10 +1,10 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { tools } from "./tools/index.js";
+} from '@modelcontextprotocol/sdk/types.js';
+import { tools } from './tools/index.js';
 
 /**
  * Create an MCP server with capabilities for resources (to list/read notes),
@@ -12,8 +12,8 @@ import { tools } from "./tools/index.js";
  */
 const server = new Server(
   {
-    name: "mcp-server-rubygems",
-    version: "0.1.0",
+    name: 'mcp-server-rubygems',
+    version: '0.1.0',
   },
   {
     capabilities: {
@@ -35,9 +35,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
  * Handler for tool calls.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const tool = tools.find(t => t.name === request.params.name);
+  const tool = tools.find((t) => t.name === request.params.name);
   if (!tool) {
-    throw new Error("Unknown tool");
+    throw new Error('Unknown tool');
   }
 
   return tool.handler(request.params.arguments);
@@ -53,6 +53,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("Server error:", error);
+  console.error('Server error:', error);
   process.exit(1);
 });

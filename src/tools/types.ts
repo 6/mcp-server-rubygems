@@ -19,5 +19,7 @@ type McpToolResponse = {
  * Type definition for an MCP tool
  */
 export interface McpTool extends Tool {
-  handler: (args: Record<string, unknown> | undefined) => Promise<McpToolResponse>;
+  handler: (
+    args: Record<string, unknown> | undefined
+  ) => Promise<McpToolResponse>;
 }
