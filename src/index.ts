@@ -4,7 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { getRubyGemInfo, getRubyGemInfoJsonSchema } from "./tools/rubygems.js";
+import { TOOL } from "./tools/rubygems.js";
 
 /**
  * Create an MCP server with capabilities for resources (to list/read notes),
@@ -30,40 +30,17 @@ const server = new Server(
  */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
-    tools: [
-      {
-        name: "get_rubygem_info",
-        description: "Get information about a RubyGem from the RubyGems.org API",
-        inputSchema: getRubyGemInfoJsonSchema
-      }
-    ]
+    tools: [TOOL]
   };
 });
 
 /**
  * Handler for tool calls.
- * Handles both note creation and RubyGem info fetching.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
-    case "get_rubygem_info": {
-      const gemName = String(request.params.arguments?.rubygem_name);
-      if (!gemName) {
-        throw new Error("RubyGem name is required");
-      }
-
-      try {
-        const gemInfo = await getRubyGemInfo(gemName);
-        return {
-          content: [{
-            type: "text",
-            text: JSON.stringify(gemInfo, null, 2)
-          }]
-        };
-      } catch (error: any) {
-        throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
-      }
-    }
+    case TOOL.name:
+      return TOOL.handler(request.params.arguments || {});
 
     default:
       throw new Error("Unknown tool");

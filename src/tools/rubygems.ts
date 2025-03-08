@@ -27,7 +27,7 @@ export const GetRubyGemInfoInputSchema = z.object({
 export const getRubyGemInfoJsonSchema = zodToJsonSchema(GetRubyGemInfoInputSchema);
 
 // Function to fetch RubyGem info
-export async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
+async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
   const response = await fetch(`https://rubygems.org/api/v1/gems/${gemName}.json`);
 
   if (!response.ok) {
@@ -40,3 +40,28 @@ export async function getRubyGemInfo(gemName: string): Promise<RubyGemInfo> {
   const data = await response.json();
   return RubyGemInfoSchema.parse(data);
 }
+
+// Tool definition
+export const TOOL = {
+  name: 'get_rubygem_info',
+  description: 'Get information about a RubyGem from the RubyGems.org API',
+  inputSchema: getRubyGemInfoJsonSchema,
+  handler: async (args: { rubygem_name?: unknown }) => {
+    const gemName = String(args.rubygem_name);
+    if (!gemName) {
+      throw new Error("RubyGem name is required");
+    }
+
+    try {
+      const gemInfo = await getRubyGemInfo(gemName);
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify(gemInfo, null, 2)
+        }]
+      };
+    } catch (error: any) {
+      throw new Error(`Failed to fetch RubyGem info: ${error.message}`);
+    }
+  }
+} as const;
